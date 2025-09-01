@@ -8,6 +8,7 @@ public class XApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(XApplication.class, args);
+		System.out.println("Running");
 	}
 
 }
