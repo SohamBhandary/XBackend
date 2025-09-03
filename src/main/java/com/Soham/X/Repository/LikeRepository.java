@@ -6,13 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface LikeRepository extends JpaRepository<Like,Long> {
+public interface LikeRepository extends JpaRepository<Like, Long> {
 
-    @Query("SELECT l from Like l where l.userId=:userId AND l.tweetId=:tweetId")
-    public Like doesLikeExist(@Param("userId")Long userId,@Param("tweetId")Long tweetId);
+    @Query("SELECT l FROM Like l WHERE l.user.id = :userId AND l.tweet.id = :tweetId")
+    Like doesLikeExist(@Param("userId") Long userId,
+                       @Param("tweetId") Long tweetId);
 
-    @Query("SELECT l from Like l WHERE l.tweetId=:tweetId")
-    public List<Like> findByTweetId(@Param("tweetId")Long tweetId);
-
+    @Query("SELECT l FROM Like l WHERE l.tweet.id = :tweetId")
+    List<Like> findByTweetId(@Param("tweetId") Long tweetId);
 }

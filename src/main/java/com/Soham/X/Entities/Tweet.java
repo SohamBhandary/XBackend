@@ -39,7 +39,7 @@ public class Tweet {
     private boolean isReply;
     private boolean isTweet;
 
-    private LocalDateTime CreatedAt;
+    private LocalDateTime createdAt;
 
 
 
