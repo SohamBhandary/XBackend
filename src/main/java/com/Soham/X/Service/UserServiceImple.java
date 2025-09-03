@@ -62,11 +62,23 @@ public class UserServiceImple implements UserService{
 
     @Override
     public User followUser(Long userId, User user) throws UserException {
-        return null;
+        User followToUser=findUserById(userId);
+        if(user.getFollowings().contains(followToUser)&& followToUser.getFollowers().contains(user)){
+            user.getFollowings().remove(followToUser);
+            followToUser.getFollowers().remove(user);
+        }
+        else{
+            user.getFollowings().add(followToUser);
+            followToUser.getFollowings().add(user);
+        }
+        userRepository.save(followToUser);
+        userRepository.save(user);
+        return followToUser;
     }
 
     @Override
     public List<User> serachUser(String query) {
-        return List.of();
+
+        return userRepository.search(query);
     }
 }
