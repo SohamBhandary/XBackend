@@ -3,6 +3,7 @@ package com.Soham.X.Service;
 import com.Soham.X.Entities.Like;
 import com.Soham.X.Entities.Tweet;
 import com.Soham.X.Entities.User;
+import com.Soham.X.Exception.LikeException;
 import com.Soham.X.Exception.TweetException;
 import com.Soham.X.Exception.UserException;
 import com.Soham.X.Repository.LikeRepository;
@@ -46,5 +47,19 @@ public class LikeServiceImple implements LikeService{
 
 
         return likes ;
+    }
+
+    @Override
+    public Like unlikeTweet(Long tweetId, User user) throws UserException, TweetException, LikeException {
+        Like like=likeRepository.findById(tweetId).orElseThrow(()->new LikeException("Like Not Found"));
+
+        // Only the owner can unlike their like
+        if (!like.getUser().getId().equals(user.getId())) {
+            throw new UserException("You cannot unlike someone else's like.");
+        }
+
+
+        likeRepository.deleteById(like.getId());
+        return like;
     }
 }

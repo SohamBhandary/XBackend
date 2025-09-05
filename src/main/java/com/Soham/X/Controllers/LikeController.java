@@ -3,6 +3,7 @@ package com.Soham.X.Controllers;
 import com.Soham.X.DTO.LikeDTO;
 import com.Soham.X.Entities.Like;
 import com.Soham.X.Entities.User;
+import com.Soham.X.Exception.LikeException;
 import com.Soham.X.Exception.TweetException;
 import com.Soham.X.Exception.UserException;
 import com.Soham.X.Mapper.LikeDTOMapper;
@@ -23,7 +24,7 @@ public class LikeController {
     @Autowired
     private LikeService likeService;
 
-    @PostMapping("/{tweetId}/likes")
+    @PostMapping("/{tweetId}/like")
     public ResponseEntity<LikeDTO> likeTweet(@PathVariable Long tweetId,
                                              @RequestHeader("Authorization") String jwt)throws UserException, TweetException {
         User user=userService.findUserProfileByJwt(jwt);
@@ -35,7 +36,21 @@ public class LikeController {
         return new ResponseEntity<LikeDTO>(likeDTO, HttpStatus.CREATED);
 
     }
-    @PostMapping("/tweet/{tweetId}")
+
+    @DeleteMapping("/{tweetId}/unlike")
+    public ResponseEntity<LikeDTO>unlikeTwit(
+            @PathVariable Long tweetId,
+            @RequestHeader("Authorization") String jwt) throws UserException, TweetException, LikeException {
+
+        User user=userService.findUserProfileByJwt(jwt);
+        Like like =likeService.unlikeTweet(tweetId, user);
+
+
+        LikeDTO likeDto=LikeDTOMapper.toLikeDTO(like,user);
+        return new ResponseEntity<>(likeDto,HttpStatus.CREATED);
+    }
+
+    @GetMapping("/tweet/{tweetId}")
     public ResponseEntity<List<LikeDTO>> getAllLikes(@PathVariable Long tweetId,
                                                      @RequestHeader("Authorization") String jwt)throws UserException, TweetException {
         User user=userService.findUserProfileByJwt(jwt);

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDTOMapper {
+
     public static UserDTO toUserDto(User user) {
 
         UserDTO userDTO = new UserDTO();
@@ -17,8 +18,8 @@ public class UserDTOMapper {
         userDTO.setBackgroundImg(user.getBackgroundImage());
         userDTO.setBio(user.getBio());
         userDTO.setBirthDate(user.getBirthDate());
-        userDTO.setFollowers(toUserDto(user.getFollowers()));
-        userDTO.setFollowing(toUserDto(user.getFollowings()));
+        userDTO.setFollowers(toUserDtos(user.getFollowers()));   // FIX: call plural method
+        userDTO.setFollowing(toUserDtos(user.getFollowings()));  // FIX: call plural method
         userDTO.setLogin_with_google(user.isLoginWithGoogle());
         userDTO.setLocation(user.getLocation());
 //        userDTO.setVerified();
@@ -26,7 +27,7 @@ public class UserDTOMapper {
         return userDTO;
     }
 
-    private static List<UserDTO> toUserDto(List<User> followers) {
+    public static List<UserDTO> toUserDtos(List<User> followers) {
         List<UserDTO> userDTOS = new ArrayList<>();
         for (User user : followers) {
             UserDTO userDTO = new UserDTO();

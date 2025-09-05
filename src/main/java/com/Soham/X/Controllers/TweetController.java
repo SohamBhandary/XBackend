@@ -70,9 +70,8 @@ public class TweetController {
                                                   @RequestHeader("Authorization") String jwt) throws UserException, TweetException {
         User user=userService.findUserProfileByJwt(jwt);
      tweetService.deleteTweetById(tweetId, user.getId());
-        ApiResponse apiResponse= new ApiResponse();
-        apiResponse.setMessage("Tweet deleted Succesfuly");
-        apiResponse.setStatus(true);
+        ApiResponse apiResponse= new ApiResponse("Tweet deleted Succesfuly",true);
+
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
 
 
